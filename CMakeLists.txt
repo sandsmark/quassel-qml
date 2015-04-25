@@ -68,6 +68,8 @@ if (USE_QT4)
 else()
     option(WITH_KDE "Integration with the KDE Frameworks runtime environment")
     add_feature_info(WITH_KDE WITH_KDE "Integrate with the KDE Frameworks runtime environment")
+    option(WITH_QML "Integration with the KDE Frameworks runtime environment")
+    add_feature_info(WITH_QML WITH_QML "Use the QtQuick interface")
 endif()
 
 cmake_dependent_option(WITH_OXYGEN "Install Oxygen icon set (usually shipped with KDE)" ON "NOT WITH_KDE" OFF)
@@ -241,6 +243,16 @@ if (USE_QT5)
             endif()
         endif()
         add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" Qt5WebKitWidgets_FOUND "Support showing previews for URLs in chat")
+
+        if (WITH_QML)
+            find_package(Qt5Quick QUIET)
+            set_package_properties(Qt5Quick PROPERTIES TYPE RECOMMENDED
+                URL "http://qt.digia.com"
+                DESCRIPTION "dynamic user interface framework"
+                PURPOSE     "Needed for the QML based intreface"
+            )
+        endif()
+        add_feature_info("WITH_QML, QtQuick modules" Qt5Quick_FOUND "Support for the QML based UI")
 
         # KDE Frameworks
         ################
